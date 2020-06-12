@@ -17,34 +17,34 @@ def merge_pdfs(paths, output):
 		pdf_writer.write(out)
 
 def split(path, name_of_split, split_unit):
-        out_count = 0
+	out_count = 0
 	pdf = PdfFileReader(path)
 	try:
-                if pdf.getNumPages() < split_unit:
-                        raise
+		if pdf.getNumPages() < split_unit:
+			raise
 
-                for page in range(pdf.getNumPages() / split_unit):
-                        pdf_writer = PdfFileWriter()
-                        for unit in range(split_unit):
-                                pdf_writer.addPage(pdf.getPage(page * split_unit + unit))
+		for page in range(pdf.getNumPages() / split_unit):
+			pdf_writer = PdfFileWriter()
+			for unit in range(split_unit):
+				pdf_writer.addPage(pdf.getPage(page * split_unit + unit))
 
-                        output = name_of_split + str(out_count) + '.pdf'
-                        out_count = out_count + 1
-                        with open(output, 'wb') as output_pdf:
-        			pdf_writer.write(output_pdf)
+			output = name_of_split + str(out_count) + '.pdf'
+			out_count = out_count + 1
+			with open(output, 'wb') as output_pdf:
+				pdf_writer.write(output_pdf)
 
-        	if pdf.getNumPages() % split_unit:
-                        rest = pdf.getNumPages() % split_unit
-                        pdf_writer = PdfFileWriter()
-                        for unit in range(rest, 0, -1):
-                                pdf_writer.addPage(pdf.getPage(pdf.getNumPages() - unit))
+		if pdf.getNumPages() % split_unit:
+			rest = pdf.getNumPages() % split_unit
+			pdf_writer = PdfFileWriter()
+			for unit in range(rest, 0, -1):
+				pdf_writer.addPage(pdf.getPage(pdf.getNumPages() - unit))
 
-                        output = name_of_split + str(out_count) + '.pdf'
-                        with open(output, 'wb') as output_pdf:
-                                pdf_writer.write(output_pdf)
+			output = name_of_split + str(out_count) + '.pdf'
+			with open(output, 'wb') as output_pdf:
+				pdf_writer.write(output_pdf)
 
-        except:
-                print('split_unit is too big')
+	except:
+		print('split_unit is too big')
 
 def regroup(path, seq, name_of_regroup):
 	pdf_reader = PdfFileReader(path)
@@ -77,7 +77,6 @@ def create_list(s_idx, e_idx):
 
 if __name__ == '__main__':
 	if len(sys.argv) < 2:
-                # <split unit>
 		print('python pdf_tool.py merge')
 		print('python pdf_tool.py split <split unit>')
 		print('python pdf_tool.py regroup')
@@ -88,9 +87,9 @@ if __name__ == '__main__':
 		paths = [u'HD_page4-1.pdf', u'HD_page4-2.pdf']
 		merge_pdfs(paths, output='merged.pdf')
 	elif sys.argv[1] == 'split':
-                if len(sys.argv) != 3:
-                        print('python pdf_tool.py split <split unit>')
-                        sys.exit(0)
+		if len(sys.argv) != 3:
+			print('python pdf_tool.py split <split unit>')
+			sys.exit(0)
 
 		# path是指定要切割的檔案
 		path = u'1052_001.pdf'
@@ -98,18 +97,18 @@ if __name__ == '__main__':
 		# 可以改變下面的HD_page成想到的檔案名字
 		split(path, u'HD_page', int(sys.argv[2]))
 	elif sys.argv[1] == 'regroup':
-        # path是指定要作處理的檔案
+		# path是指定要作處理的檔案
 		path = u'HD_Disposal_Guidelines.pdf'
 
-        # sequence是用來指定處理過的檔案，頁面要用什麼樣的順序呈現，以下都以HD_Disposal_Guidelines.pdf作例子，這個pdf檔有6頁內容
-        # 所以說，它本來的頁面順序是[1, 2, 3, 4, 5, 6]
+		# sequence是用來指定處理過的檔案，頁面要用什麼樣的順序呈現，以下都以HD_Disposal_Guidelines.pdf作例子，這個pdf檔有6頁內容
+		# 所以說，它本來的頁面順序是[1, 2, 3, 4, 5, 6]
 		# 範例一： sequence = [2, 4, 6, 1, 2, 3]，處理後的pdf還是有6頁，只是順序變了
-        # 範例二： sequence = [1, 3, 5]，處理好的pdf只剩下三頁
+		# 範例二： sequence = [1, 3, 5]，處理好的pdf只剩下三頁
 		# 範例三： sequence = [1, 2, 3]
 		#       sequence.extend(create_list(1, 6))
-        #  這個例子比較複雜，處理好的pdf會有9頁，前三頁是page 1, page 2, page 3，然後是1, 2, 3, 4, 5, 6
+		#  這個例子比較複雜，處理好的pdf會有9頁，前三頁是page 1, page 2, page 3，然後是1, 2, 3, 4, 5, 6
 
-        # 下面的HD_regroup是預設處理完的檔案名字，可以改成想要的名字
+		# 下面的HD_regroup是預設處理完的檔案名字，可以改成想要的名字
 		regroup(path, sequence, u'HD_regroup')
 	else:
 		print('python pdf_tool.py [merge/split]')
