@@ -5,5 +5,7 @@ Suggest Python version: python 2.7
 
 Usage:
     python pdf_tool.py merge
+
     python pdf_tool.py split <split unit>
+
     python pdf_tool.py regroup
